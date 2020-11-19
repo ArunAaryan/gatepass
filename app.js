@@ -1,14 +1,13 @@
 const express = require("express");
 const dotenv = require("dotenv");
 const bodyparser = require("body-parser");
-const { createUser } = require("./Auth/AuthHelper");
+// Routes import
+const StudentRoute = require("./Routes/StudentRoute");
 
 dotenv.config();
 const app = express();
 app.use(express.json());
 
-app.post("/studentlogin", (req, res) => {
-  console.log(req.body);
-  createUser(req, res);
-});
+app.use("/student", StudentRoute);
+
 app.listen(5000);

@@ -7,16 +7,16 @@ const hashPassword = (password) => {
   return bcrypt.hashSync(password, bcrypt.genSaltSync(8));
 };
 
-const comparePassword = (passwordHash, password) => {
+const comparePassword = (password, passwordHash) => {
   return bcrypt.compareSync(password, passwordHash);
 };
 
 // jwt helpers
 
-const generateJWTTOken = (id, name) => {
+const generateJWTTOken = (stu_id, name) => {
   const token = jwt.sign(
     {
-      userId: id,
+      userId: stu_id,
       name: name,
     },
     process.env.secretJWT,
@@ -25,4 +25,23 @@ const generateJWTTOken = (id, name) => {
   return token;
 };
 
-module.exports = { hashPassword, comparePassword, generateJWTTOken };
+const verifyToken = (req, res, next) => {
+  const token = req.headers["authorization"];
+  jwt.verify(token, process.env.secretJWT, function (err, decoded) {
+    if (err) {
+      return res.status(400).send({ message: "Authorization Failed" });
+    } else {
+      console.log(decoded);
+      req.userId = decoded.userId;
+      req.userName = decoded.name;
+      next();
+    }
+  });
+};
+
+module.exports = {
+  hashPassword,
+  comparePassword,
+  generateJWTTOken,
+  verifyToken,
+};
