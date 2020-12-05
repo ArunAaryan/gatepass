@@ -27,11 +27,12 @@ const generateJWTTOken = (stu_id, name) => {
 
 const verifyToken = (req, res, next) => {
   const token = req.headers["authorization"];
+  // console.log(token);
   jwt.verify(token, process.env.secretJWT, function (err, decoded) {
     if (err) {
       return res.status(400).send({ message: "Authorization Failed" });
     } else {
-      console.log(decoded);
+      // console.log(decoded);
       req.userId = decoded.userId;
       req.userName = decoded.name;
       next();
