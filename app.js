@@ -1,6 +1,5 @@
 const express = require("express");
 const dotenv = require("dotenv");
-const bodyparser = require("body-parser");
 const cors = require("cors");
 // Routes import
 const StudentRoute = require("./Routes/StudentRoute");
